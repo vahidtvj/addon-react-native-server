@@ -1,0 +1,8 @@
+import { WebSocketServer } from 'ws';
+import u from '@storybook/core/core-events';
+
+async function v(t,{configType:l,presets:y,loglevel:p}){if(l==="DEVELOPMENT"){let a=await y.apply("reactNativeServerOptions");if(a){let f=a.port??7007,b=a.host??"localhost",g=new WebSocketServer({port:f,host:b});g.on("connection",function(o){console.log("websocket connection established"),o.on("error",console.error),o.on("message",function(i){var s,c;try{let e=JSON.parse(i.toString());p==="debug"&&(console.log("Websocket message received from client:"),console.log("type: ",e.type),console.log("args: ",e.args[0])),e.args&&Array.isArray(e.args)&&e.args.length>0?(s=t.emit)==null||s.call(t,e.type,e.args[0]):(c=t.emit)==null||c.call(t,e.type);}catch(e){console.error(e);}});}),setInterval(function(){g.clients.forEach(function(n){n.send(JSON.stringify({type:"ping",args:[]}));});},1e4),[...Object.values(u),"storybook-addon-background:set","storybook-addon-background:unset","storybook-addon-background:update","storybook/actions/action-event","storybook/actions/action-clear"].forEach(r=>{t.on(r,async o=>{var n,i;try{r==="storybook/actions/action-event"&&((i=(n=o==null?void 0:o.data)==null?void 0:n.args)!=null&&i.target)&&(o.data.args.nativeEvent=null,o.data.args.target=null,o.data.args.currentTarget=null,o.data.args.view=null);let s=JSON.stringify({type:r,args:[o]});p==="debug"&&(console.log("message received on the storybook channel"),console.log("type: ",r),console.log("data: ",o)),g.clients.forEach(c=>c.send(s));}catch(s){console.error({event:r,error:s});}});});}}return t}
+
+export { v as experimental_serverChannel };
+//# sourceMappingURL=preset.mjs.map
+//# sourceMappingURL=preset.mjs.map
